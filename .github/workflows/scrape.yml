@@ -2,9 +2,11 @@ name: Scrape & Alert
 
 on:
   schedule:
-    # Run every 12 hours (UTC)
     - cron: "0 6,18 * * *"
-  workflow_dispatch:   # also allow manual trigger from GitHub UI
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   scrape:
@@ -14,8 +16,8 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          # Need write access to commit the updated DB and RSS feed
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -40,13 +42,15 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           BLUESKY_HANDLE:      ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
-          SITE_LINK:           "https://${{ github.repository_owner }}.github.io/tx-surveillance-watch"
+          SITE_LINK: "https://stickyhashtr33.github.io/tx-surveillance-watch"
         run: python main.py
 
       - name: Commit RSS feed & DB
         run: |
           git config user.name  "TxSurveillanceWatch Bot"
-          git config user.email "bot@txsurveillancewatch"
-          git add public/feed.xml watchdog.db
-          git diff --cached --quiet || git commit -m "chore: scrape run $(date -u '+%Y-%m-%d %H:%M') UTC"
-          git push
+          git config user.email "bot@txsurveillancewatch.github.io"
+          mkdir -p public
+          git add -f public/feed.xml || true
+          git add -f watchdog.db || true
+          git diff --cached --quiet && echo "Nothing to commit" || git commit -m "chore: scrape run $(date -u '+%Y-%m-%d %H:%M') UTC"
+          git push origin main || echo "Push failed but continuing"
