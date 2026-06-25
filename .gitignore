@@ -1,0 +1,30 @@
+# Environment / secrets
+.env
+
+# Database (commit only intentionally)
+watchdog.db
+
+# Logs
+*.log
+watchdog.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+dist/
+build/
+*.egg-info/
+
+# Playwright browser binaries
+.playwright/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/

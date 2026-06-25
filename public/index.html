@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Texas Surveillance Contract Watch</title>
+  <meta name="description" content="Automated public alerts for surveillance tech procurement by Texas municipalities, counties, and state agencies.">
+
+  <style>
+    :root {
+      --bg:         #0a0c10;
+      --surface:    #111318;
+      --border:     #1e2330;
+      --accent:     #ff4a4a;
+      --accent2:    #ff8800;
+      --text:       #e0e6f0;
+      --muted:      #6b7280;
+      --tag-bg:     #1a1f2e;
+      --tag-text:   #a78bfa;
+      --mono:       "JetBrains Mono", "Fira Code", monospace;
+      --sans:       "Inter", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .header-badge {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    header h1 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    header p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    /* ── Layout ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* ── Stats bar ── */
+    .stats {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem 1.25rem;
+      flex: 1;
+      min-width: 130px;
+    }
+
+    .stat-value {
+      font-family: var(--mono);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.2rem;
+    }
+
+    /* ── Section header ── */
+    .section-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Contract cards ── */
+    #feed-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .contract-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      transition: border-color 0.15s;
+    }
+
+    .contract-card:hover { border-left-color: var(--accent2); }
+
+    .card-source {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      text-decoration: none;
+      display: block;
+    }
+
+    .card-title:hover { color: var(--accent2); }
+
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .meta-amount { color: var(--accent2); font-family: var(--mono); font-weight: 600; }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    /* ── RSS link ── */
+    .rss-bar {
+      margin-top: 2rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .rss-bar a { color: var(--accent2); text-decoration: none; }
+    .rss-bar a:hover { text-decoration: underline; }
+
+    /* ── Loading / empty ── */
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 3rem 0;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge"></div>
+  <h1>Texas Surveillance Contract Watch</h1>
+  <p>Updated by GitHub Actions every 12h</p>
+</header>
+
+<main>
+  <!-- Stats bar populated by JS after parsing the RSS feed -->
+  <div class="stats" id="stats-bar">
+    <div class="stat">
+      <div class="stat-value" id="stat-total">—</div>
+      <div class="stat-label">Contracts found</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="stat-recent">—</div>
+      <div class="stat-label">Last 30 days</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="stat-sources">4</div>
+      <div class="stat-label">Data sources</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="stat-updated">—</div>
+      <div class="stat-label">Last updated</div>
+    </div>
+  </div>
+
+  <div class="section-title">Recent surveillance contracts</div>
+
+  <div id="feed-container">
+    <div class="empty">Loading feed…</div>
+  </div>
+
+  <div class="rss-bar">
+    📡 Subscribe via RSS:
+    <a href="feed.xml">feed.xml</a>
+    — paste into any RSS reader (Feedly, NetNewsWire, etc.)
+  </div>
+</main>
+
+<script>
+// Parse the RSS feed and render cards on the static page.
+// No backend required — runs entirely in the browser.
+const FEED_URL = "./feed.xml";
+
+async function loadFeed() {
+  const container = document.getElementById("feed-container");
+
+  try {
+    const res = await fetch(FEED_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(text, "application/xml");
+
+    const items = Array.from(xml.querySelectorAll("item"));
+    if (!items.length) {
+      container.innerHTML = '<div class="empty">No contracts logged yet. First scrape run pending.</div>';
+      return;
+    }
+
+    // Stats
+    document.getElementById("stat-total").textContent = items.length;
+
+    const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+    const recent = items.filter(item => {
+      const pub = new Date(item.querySelector("pubDate")?.textContent || 0);
+      return pub.getTime() > thirtyDaysAgo;
+    }).length;
+    document.getElementById("stat-recent").textContent = recent;
+
+    const lastBuild = xml.querySelector("lastBuildDate")?.textContent;
+    if (lastBuild) {
+      const d = new Date(lastBuild);
+      document.getElementById("stat-updated").textContent =
+        d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    }
+
+    // Cards
+    const cards = items.map(item => {
+      const title    = item.querySelector("title")?.textContent || "Unnamed contract";
+      const link     = item.querySelector("link")?.textContent || "#";
+      const category = item.querySelector("category")?.textContent || "UNKNOWN";
+      const pubDate  = item.querySelector("pubDate")?.textContent;
+      const dateStr  = pubDate
+        ? new Date(pubDate).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
+        : "";
+
+      // Parse the HTML description
+      const descRaw = item.querySelector("description")?.textContent || "";
+      const tmpDoc  = new DOMParser().parseFromString(descRaw, "text/html");
+      const getField = (label) => {
+        const ps = tmpDoc.querySelectorAll("p");
+        for (const p of ps) {
+          if (p.textContent.startsWith(label)) {
+            return p.textContent.replace(label, "").trim();
+          }
+        }
+        return "";
+      };
+
+      const vendor  = getField("Vendor:");
+      const agency  = getField("Agency:");
+      const amount  = getField("Amount:");
+      const keywords= getField("Keywords matched:").split(",").map(s => s.trim()).filter(Boolean);
+
+      const tagsHtml = keywords
+        .slice(0, 5)
+        .map(k => `<span class="tag">${escapeHtml(k)}</span>`)
+        .join("");
+
+      const amountHtml = amount && amount !== "Not reported"
+        ? `<span class="meta-amount">${escapeHtml(amount)}</span>`
+        : "";
+
+      return `
+        <div class="contract-card">
+          <div class="card-source">${escapeHtml(category)} ${dateStr ? "· " + dateStr : ""}</div>
+          <a class="card-title" href="${escapeHtml(link)}" target="_blank" rel="noopener">
+            ${escapeHtml(title)}
+          </a>
+          <div class="card-meta">
+            ${vendor ? `<span>🏢 ${escapeHtml(vendor)}</span>` : ""}
+            ${agency ? `<span>🏛️ ${escapeHtml(agency)}</span>` : ""}
+            ${amountHtml}
+          </div>
+          ${tagsHtml ? `<div class="card-tags">${tagsHtml}</div>` : ""}
+        </div>`;
+    }).join("\n");
+
+    container.innerHTML = cards;
+
+  } catch (err) {
+    container.innerHTML = `<div class="empty">Could not load feed: ${err.message}</div>`;
+  }
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+loadFeed();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+# Core
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=5.0.0               # faster BS4 parser
+
+# JS-rendered sites (ESBD)
+playwright>=1.40.0        # pip install playwright && playwright install chromium
+
+# Bluesky
+atproto>=0.0.50
+
+# Scheduling (optional — cron or APScheduler both work)
+# apscheduler>=3.10.0     # uncomment if you prefer Python scheduler over cron
+
+# Dev / testing
+python-dotenv>=1.0.0      # load .env in dev
