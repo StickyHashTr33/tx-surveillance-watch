@@ -1,9 +1,6 @@
 # Environment / secrets
 .env
 
-# Database (commit only intentionally)
-watchdog.db
-
 # Logs
 *.log
 watchdog.log
