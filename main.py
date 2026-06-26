@@ -15,7 +15,7 @@ from datetime import datetime
 
 import config
 import db
-from scrapers import USASpendingScraper, COSAScraper, ESBDScraper, BexarScraper
+from scrapers import USASpendingScraper, COSAScraper, ESBDScraper, BexarScraper, AustinScraper, LegistarScraper
 from alerts import write_feed, send_pending, send_startup_ping, post_pending
 
 # ---------------------------------------------------------------------------
@@ -40,6 +40,8 @@ SCRAPERS = {
     "cosa":        (COSAScraper,        config.ENABLE_COSA),
     "esbd":        (ESBDScraper,        config.ENABLE_ESBD),
     "bexar":       (BexarScraper,       config.ENABLE_BEXAR),
+    "austin":      (AustinScraper,      config.ENABLE_AUSTIN),
+    "legistar":    (LegistarScraper,    config.ENABLE_LEGISTAR),
 }
 
 

@@ -50,6 +50,8 @@ ENABLE_USASPENDING = os.getenv("ENABLE_USASPENDING", "1") == "1"
 ENABLE_COSA        = os.getenv("ENABLE_COSA", "1") == "1"
 ENABLE_ESBD        = os.getenv("ENABLE_ESBD", "1") == "1"
 ENABLE_BEXAR       = os.getenv("ENABLE_BEXAR", "1") == "1"
+ENABLE_AUSTIN 	   = os.getenv("ENABLE_AUSTIN", "1") == "1"
+ENABLE_LEGISTAR    = os.getenv("ENABLE_LEGISTAR", "1") == "1"
 
 # ---------------------------------------------------------------------------
 # USAspending-specific
