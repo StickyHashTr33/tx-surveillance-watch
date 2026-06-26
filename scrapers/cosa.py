@@ -144,7 +144,11 @@ class COSAScraper(BaseScraper):
             url = BASE_URL
             if link_tag:
                 href = link_tag["href"]
-                url = href if href.startswith("http") else f"https://webapp1.sanantonio.gov{href}"
+                if href.startswith("http"):
+                    url = href
+                elif href.startswith("/") and not href.startswith("javascript"):
+                    url = f"https://webapp1.sanantonio.gov{href}"
+                # javascript: postback hrefs are useless — fall back to BASE_URL
 
             # Parse amount from any column that looks like a dollar figure
             amount = 0.0

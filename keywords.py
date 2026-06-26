@@ -22,7 +22,6 @@ VENDOR_KEYWORDS = [
 
     # Facial recognition
     "Clearview AI",
-    "Clearview",
     "Cognitec",
     "NEC NeoFace",
     "Corsight",
