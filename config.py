@@ -15,7 +15,7 @@ BLUESKY_PASSWORD   = os.getenv("BLUESKY_APP_PASSWORD", "")  # App password, NOT 
 # Paths
 # ---------------------------------------------------------------------------
 DB_PATH          = os.getenv("DB_PATH", "watchdog.db")
-RSS_OUTPUT_PATH  = os.getenv("RSS_OUTPUT_PATH", "public/feed.xml")
+RSS_OUTPUT_PATH  = os.getenv("RSS_OUTPUT_PATH", "docs/feed.xml")
 LOG_PATH         = os.getenv("LOG_PATH", "watchdog.log")
 
 # ---------------------------------------------------------------------------
@@ -35,7 +35,7 @@ REQUEST_DELAY_SECONDS = float(os.getenv("REQUEST_DELAY", "2.0"))  # polite delay
 REQUEST_TIMEOUT       = int(os.getenv("REQUEST_TIMEOUT", "30"))
 USER_AGENT = (
     "TxSurveillanceWatch/0.1 (public interest research; "
-    "open source; +https://github.com/YOUR_HANDLE/tx-surveillance-watch)"
+    "open source; +https://github.com/StickyHashTr33/tx-surveillance-watch)"
 )
 
 # ---------------------------------------------------------------------------
@@ -67,4 +67,6 @@ PORTALS = {
     "esbd_awards": "https://www.txsmartbuy.gov/esbdawards",
     "bexar":       "https://www.bexar.org/Bids.aspx",
     "usaspending": "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+    "austin":      "https://data.austintexas.gov/Budget-and-Finance/Contracts/84ih-p28j",
+    "legistar":    "https://austintexas.legistar.com/Calendar.aspx",
 }
