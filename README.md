@@ -150,3 +150,4 @@ All data collected by this tool is legally public under the Texas Public Informa
 - [EFF Atlas of Surveillance](https://atlasofsurveillance.org) — national police tech map
 - [ADS-B Exchange](https://adsbexchange.com) — the model: unfiltered public data, no blocklist
 - [OpenStreetMap surveillance tags](https://wiki.openstreetmap.org/wiki/Tag:man_made%3Dsurveillance)
+- [Flock Locations](https://flocklocations.com) — public map of Flock Safety and ALPR camera locations
